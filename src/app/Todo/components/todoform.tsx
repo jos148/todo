@@ -1,24 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
-
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { supabase } from "@/lib/supabase";
 import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -26,27 +11,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { supabase } from "@/lib/supabase";
+} from "@/components/ui/popover";
+import { format } from "date-fns";
 import { Textarea } from "@/components/ui/textarea";
-
-const FormSchema = z.object({
-  name: z.string().min(1, "Task name is required"),
-  priority: z.string().min(1, "Priority is required"),
-  description: z.string().min(1, "Description is required"),
-  
-});
+import { toast } from "sonner";
 
 export default function TodoForm() {
-
   const [name, setName] = useState("");
   const [priority, setPriority] = useState("");
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState("")
   const [loading, setLoading] = useState(false);
 
   const addTodo = async (e: React.FormEvent) => {
@@ -74,80 +53,84 @@ export default function TodoForm() {
       toast("New todo added", {
         description: `Task: ${name}`,
         action: {
-          label: "Done",
-          onClick: () => console.log("Done"),
+          label: "Undo",
+          onClick: () => console.log("Undo action"),
         },
       });
+
     }
     setLoading(false);
   };
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  })
-
-
   return (
-    <Form {...form}>
-      <form onSubmit={addTodo} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="dob"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel></FormLabel>
+    <form onSubmit={addTodo} className="my-6 mx-7 items-center">
+      {/* Title input */}
+      <label>Add New Task</label>
 
-              <label>Add New Task</label>
+      <Input
+        placeholder="New todo..."
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="flex-1 mb-3"
+      />
 
-              <Input
-                placeholder="New todo..."
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="flex-1 mb-3"
-              />
+      {/* Completed select */}
+      <Select value={priority} onValueChange={setPriority}>
+        <SelectTrigger className="w-[150px]">
+          <SelectValue placeholder="Priority" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="Urgent">Urgent ✅</SelectItem>
+          <SelectItem value="Important">Important ✅</SelectItem>
+          <SelectItem value="Medium">Medium ✅</SelectItem>
+        </SelectContent>
+      </Select>
 
-              <Select value={priority} onValueChange={setPriority}>
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Priority" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Urgent">Urgent ✅</SelectItem>
-                  <SelectItem value="Important">Important ✅</SelectItem>
-                  <SelectItem value="Medium">Medium ✅</SelectItem>
-                </SelectContent>
-              </Select>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="w-[180px] justify-start text-left font-normal my-3"
-                  >
-                    {dueDate ? format(dueDate, "PPP") : "Pick a date"}
-                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={dueDate}
-                    onSelect={setDueDate}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormDescription>Description</FormDescription>
-              <FormMessage />
-              <Textarea
-                placeholder="Type your message here."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="mb-3"
-              />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+      {/* Date picker */}
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className="w-[180px] justify-start text-left font-normal my-3"
+          >
+            {dueDate ? format(dueDate, "PPP") : "Pick a date"}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={dueDate}
+            onSelect={setDueDate}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+
+      <Textarea
+        placeholder="Type your message here."
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        className="mb-3"
+      />
+
+      {/* Submit button */}
+      <Button type="submit" disabled={loading}>
+        {loading ? "Adding..." : "Add"}
+      </Button>
+      <Button
+        variant="outline"
+        onClick={() =>
+          toast("Event has been created", {
+            description: "Sunday, December 03, 2023 at 9:00 AM",
+            action: {
+              label: "Undo",
+              onClick: () => console.log("Undo"),
+            },
+          })
+        }
+      >
+        Show Toast
+      </Button>
+    </form>
   );
 }
