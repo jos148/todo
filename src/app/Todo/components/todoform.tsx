@@ -34,11 +34,6 @@ import {
 import { supabase } from "@/lib/supabase";
 import { Textarea } from "@/components/ui/textarea";
 
-const FormSchema = z.object({
-  dob: z.date({
-    required_error: "A date of birth is required.",
-  }),
-})
 
 export default function TodoForm() {
 
