@@ -35,10 +35,11 @@ import { supabase } from "@/lib/supabase";
 import { Textarea } from "@/components/ui/textarea";
 
 const FormSchema = z.object({
-  dob: z.date({
-    required_error: "A date",
-  }),
-})
+  name: z.string().min(1, "Task name is required"),
+  priority: z.string().min(1, "Priority is required"),
+  description: z.string().min(1, "Description is required"),
+  dob: z.date({ required_error: "Please select a due date" }),
+});
 
 export default function TodoForm() {
 
@@ -85,7 +86,6 @@ export default function TodoForm() {
     resolver: zodResolver(FormSchema),
   })
 
-  
 
   return (
     <Form {...form}>
