@@ -38,7 +38,7 @@ const FormSchema = z.object({
   name: z.string().min(1, "Task name is required"),
   priority: z.string().min(1, "Priority is required"),
   description: z.string().min(1, "Description is required"),
-  dob: z.date({ required_error: "Please select a due date" }),
+  
 });
 
 export default function TodoForm() {
