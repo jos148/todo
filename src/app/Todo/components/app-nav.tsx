@@ -13,8 +13,6 @@ import Image from "next/image";
 import { SearchUsers } from "./searchuser";
 
 
-
-
 export default function AppNav() {
 
   const { theme, setTheme } = useTheme();
