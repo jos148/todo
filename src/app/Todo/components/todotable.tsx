@@ -61,7 +61,7 @@ export default function TodoTable() {
   const [totalCount, setTotalCount] = useState(0)
   const itemsPerPage = 10;
   const totalPages = Math.ceil(totalCount / itemsPerPage);
-  const [openDialogId, setOpenDialogId] = useState<string | null>(null);
+  const [openDialogId, setOpenDialogId] = useState<number | null>(null);
 
   // Fetch + subscribe
   useEffect(() => {
@@ -128,10 +128,10 @@ export default function TodoTable() {
 
   const togglePopover = (id: number) => {
     if (openDialogId === id) {
-      setOpenDialogId(null);
-    } else {
-      setOpenDialogId(id);
-    }
+  setOpenDialogId(null);
+} else {
+  setOpenDialogId(id);
+}
   };
 
   const renderPageNumbers = () => {
