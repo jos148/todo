@@ -8,6 +8,17 @@ import { CircleArrowLeft, CirclePlus } from "lucide-react";
 import { Tabs, TabsContent, TabsTrigger, TabsList } from "@/components/ui/tabs";
 import TodoTable from "./todotable"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import TodoForm from "./todoform";
 
 
@@ -32,16 +43,23 @@ export default function Main () {
               <FaCalendarAlt />
             </Button>
 
-            <Popover>
-              <PopoverTrigger asChild>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
                 <Button className="bg-teal-600 text-white hover:bg-teal-700">
                   <CirclePlus className="mr-2" /> Add Task
                 </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[90vw] max-w-sm">
-                <TodoForm />
-              </PopoverContent>
-            </Popover>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Add New Todo List</AlertDialogTitle>
+                  <AlertDialogDescription>
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                    <TodoForm />
+                <AlertDialogFooter>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
 
             <Button className="bg-blue-900 text-white hover:bg-blue-800">
               <LuUpload className="mr-2" /> Upload

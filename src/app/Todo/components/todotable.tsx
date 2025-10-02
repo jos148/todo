@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Flag } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -49,6 +50,9 @@ export default function TodoTable() {
   const [totalCount, setTotalCount] = useState(0)
   const itemsPerPage = 10;
   const totalPages = Math.ceil(totalCount / itemsPerPage);
+  const [openPopoverId, setOpenPopoverId] = useState<number | null>(null);
+
+
 
   // Fetch + subscribe
   useEffect(() => {
@@ -112,6 +116,14 @@ export default function TodoTable() {
       supabase.removeChannel(channel);
     };
   }, [currentPage]);
+
+  const togglePopover = (id: number) => {
+    if (openPopoverId === id) {
+      setOpenPopoverId(null);
+    } else {
+      setOpenPopoverId(id);
+    }
+  };
 
   const renderPageNumbers = () => {
     return Array.from({ length: totalPages }, (_, i) => (
@@ -186,6 +198,44 @@ export default function TodoTable() {
                     <Flag className="h-3 w-3" />
                     {user.priority}
                   </Badge>
+                </TableCell>
+                <TableCell>
+                  <Button variant="link" size="sm" onClick={() => togglePopover(user.id)}>
+                    ...
+                  </Button>
+
+                  {/* Popover */}
+                  {openPopoverId === user.id && (
+                    <div
+                      className="absolute z-10 p-4 mt-2 bg-white border rounded shadow-lg w-64"
+                      style={{ right: 0 }}
+                    >
+                      <h4 className="font-bold mb-2">
+                        Details for {user.name}
+                      </h4>
+                      <p>
+                        <strong>ID:</strong> {user.id}
+                      </p>
+                      <p>
+                        <strong>Name:</strong> {user.name}
+                      </p>
+                      <p>
+                        <strong>Date:</strong> {user.date}
+                      </p>
+                      <p>
+                        <strong>Priority:</strong> {user.priority}
+                      </p>
+                      <p>
+                        <strong>Priority:</strong> {user.description}
+                      </p>
+                      <Button
+                        variant="solid"
+                        onClick={() => setOpenPopoverId(null)}
+                      >
+                        Close
+                      </Button>
+                    </div>
+                  )}
                 </TableCell>
               </TableRow>
             ))

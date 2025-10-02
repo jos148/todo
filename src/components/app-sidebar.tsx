@@ -1,5 +1,8 @@
 "use client"
 
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import Link from "next/link"
 import { Calendar, ChevronUp, Home, Inbox, Search, Settings, User2 } from "lucide-react"
 
 import {
@@ -12,7 +15,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarFooter,
-  useSidebar,
 } from "@/components/ui/sidebar"
 
 import {
@@ -53,6 +55,15 @@ const items = [
 
 export function AppSidebar() {
 
+  const searchParams = useSearchParams();
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const nameFromQuery = searchParams.get("name") || "";
+    setName(nameFromQuery);
+  }, [searchParams]);
+
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -80,7 +91,7 @@ export function AppSidebar() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton>
-                    <User2 /> Username
+                    <User2 /> {name}
                     <ChevronUp className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
@@ -95,7 +106,7 @@ export function AppSidebar() {
                     <span>Billing</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <span>Sign out</span>
+                    <Link href="/"><span>Sign out</span></Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

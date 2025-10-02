@@ -20,6 +20,7 @@ import {
 import { format } from "date-fns";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 
 export default function TodoForm() {
   const [name, setName] = useState("");
@@ -50,11 +51,11 @@ export default function TodoForm() {
       setPriority("");
       setDueDate(undefined);
       setDescription("");
-      toast("New todo added", {
-        description: `Task: ${name}`,
+      toast("New todo list added", {
+        description: `Task List: ${name}`,
         action: {
-          label: "Undo",
-          onClick: () => console.log("Undo action"),
+          label: "Done",
+          onClick: () => console.log("Done action"),
         },
       });
 
@@ -65,7 +66,7 @@ export default function TodoForm() {
   return (
     <form onSubmit={addTodo} className="my-6 mx-7 items-center">
       {/* Title input */}
-      <label>Add New Task</label>
+      <label>Add Name</label>
 
       <Input
         placeholder="New todo..."
@@ -114,9 +115,12 @@ export default function TodoForm() {
       />
 
       {/* Submit button */}
-      <Button type="submit" disabled={loading}>
-        {loading ? "Adding..." : "Add"}
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction asChild>
+      <Button type="submit" disabled={loading} className="mx-2">
+        {loading ? "Submitting..." : "Submit"}
       </Button>
+      </AlertDialogAction>
     </form>
   );
 }

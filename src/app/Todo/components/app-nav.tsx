@@ -1,5 +1,8 @@
 "use client"
 
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
 import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -15,14 +18,20 @@ import { SearchUsers } from "./searchuser";
 export default function AppNav() {
 
   const { theme, setTheme } = useTheme();
+  const searchParams = useSearchParams();
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const nameFromQuery = searchParams.get("name") || "";
+    setName(nameFromQuery);
+  }, [searchParams]);
 
   const users = [
   {
     id: "1",
-    name: "Hi Paul",
     avatar: "https://i.pravatar.cc/300?u=iu",
   },]
-  
+
   return (
     <div className="w-full top-0 z-40 dark:bg-muted dark:text-white bg-white border-b">
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-6">
@@ -67,12 +76,12 @@ export default function AppNav() {
           <Button variant="outline" className="rounded-full pl-0 pr-2 gap-2">
             <Image
               src={users[0].avatar}
-              alt={users[0].name}
+              alt={name}
               width={32}
               height={32}
               className="h-8 w-8 rounded-full"
             />
-            <span className="hidden md:inline">{users[0].name}</span>
+            <span className="hidden md:inline">{name}</span>
           </Button>
 
           <Button
