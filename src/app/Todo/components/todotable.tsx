@@ -127,10 +127,10 @@ export default function TodoTable() {
   }, [currentPage]);
 
   const togglePopover = (id: number) => {
-    if (openPopoverId === id) {
-      setOpenPopoverId(null);
+    if (openDialogId === id) {
+      setOpenDialogId(null);
     } else {
-      setOpenPopoverId(id);
+      setOpenDialogId(id);
     }
   };
 
