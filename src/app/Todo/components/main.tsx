@@ -7,11 +7,8 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { CircleArrowLeft, CirclePlus } from "lucide-react";
 import { Tabs, TabsContent, TabsTrigger, TabsList } from "@/components/ui/tabs";
 import TodoTable from "./todotable"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,

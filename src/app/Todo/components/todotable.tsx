@@ -23,6 +23,16 @@ import {
   PaginationPrevious,
   PaginationNext,
 } from "@/components/ui/pagination"
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 
 interface User {
@@ -30,6 +40,7 @@ interface User {
   priority: string;
   name: string;
   date: string;
+  description: string;
 }
 
 interface PriorityStyles {
@@ -50,9 +61,7 @@ export default function TodoTable() {
   const [totalCount, setTotalCount] = useState(0)
   const itemsPerPage = 10;
   const totalPages = Math.ceil(totalCount / itemsPerPage);
-  const [openPopoverId, setOpenPopoverId] = useState<number | null>(null);
-
-
+  const [openDialogId, setOpenDialogId] = useState<string | null>(null);
 
   // Fetch + subscribe
   useEffect(() => {
@@ -200,40 +209,36 @@ export default function TodoTable() {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <Button variant="link" size="sm" onClick={() => togglePopover(user.id)}>
-                    ...
-                  </Button>
+                  <Button
+    variant="link"
+    size="sm"
+    onClick={() => setOpenDialogId(user.id)}
+  >
+    ...
+  </Button>
 
-                  {/* Popover */}
-                  {openPopoverId === user.id && (
-                    <div
-                      className="absolute z-10 p-4 mt-2 bg-white border rounded shadow-lg w-64"
-                      style={{ right: 0 }}
-                    >
-                      <h4 className="font-bold mb-2">
-                        Details for {user.name}
-                      </h4>
-                      <p>
-                        <strong>ID:</strong> {user.id}
-                      </p>
-                      <p>
-                        <strong>Name:</strong> {user.name}
-                      </p>
-                      <p>
-                        <strong>Date:</strong> {user.date}
-                      </p>
-                      <p>
-                        <strong>Priority:</strong> {user.priority}
-                      </p>
-                      
-                      <Button
-                        variant="solid"
-                        onClick={() => setOpenPopoverId(null)}
-                      >
-                        Close
-                      </Button>
-                    </div>
-                  )}
+  <AlertDialog open={openDialogId === user.id} onOpenChange={(open) => !open && setOpenDialogId(null)}>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Details for {user.name}</AlertDialogTitle>
+        <AlertDialogDescription asChild>
+          <div className="text-sm text-muted-foreground space-y-1">
+            <p><strong>ID:</strong> {user.id}</p>
+            <p><strong>Name:</strong> {user.name}</p>
+            <p><strong>Date:</strong> {user.date}</p>
+            <p><strong>Priority:</strong> {user.priority}</p>
+            <p><strong>Description:</strong> {user.description}</p>
+          </div>
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+
+      <AlertDialogFooter>
+        <AlertDialogCancel onClick={() => setOpenDialogId(null)}>
+          Close
+        </AlertDialogCancel>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
                 </TableCell>
               </TableRow>
             ))
