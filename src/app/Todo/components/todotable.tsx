@@ -225,9 +225,7 @@ export default function TodoTable() {
                       <p>
                         <strong>Priority:</strong> {user.priority}
                       </p>
-                      <p>
-                        <strong>Priority:</strong> {user.description}
-                      </p>
+                      
                       <Button
                         variant="solid"
                         onClick={() => setOpenPopoverId(null)}
