@@ -24,13 +24,13 @@ export default function CardWithForm() {
   const handleStart = () => {
     // Redirect to the /Todo page with name as a query parameter
     router.push(`/Todo?name=${encodeURIComponent(name)}`);
-    toast("New todo added", {
-            description: `Task: ${name}`,
-            action: {
-              label: "Done",
-              onClick: () => console.log("Done action"),
-            },
-          });
+    toast("New Todo Account", {
+      description: `Folder: ${name}`,
+      action: {
+        label: "Done",
+        onClick: () => console.log("Done action"),
+      },
+    });
   };
 
   return (
