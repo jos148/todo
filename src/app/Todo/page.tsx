@@ -1,11 +1,10 @@
-"use client"
-import AppNav from "./components/app-nav"
-import { Suspense } from "react";
-import Main from "./components/main"
+export const dynamic = "force-dynamic";
 
+import AppNav from "./components/app-nav";
+import { Suspense } from "react";
+import Main from "./components/main";
 
 export default function Home() {
-
   return (
     <div className="bg-white dark:bg-muted w-full">
       <div className="border-b-2 border-gray-300">
